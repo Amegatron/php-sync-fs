@@ -1,0 +1,20 @@
+{
+  "name": "amegatron/php-sync-fs",
+  "description": "FileSystem-based drivers for PhpSync",
+  "minimum-stability": "stable",
+  "license": "BSD",
+  "authors": [
+    {
+      "name": "Amegatron",
+      "email": "amego2006@gmail.com"
+    }
+  ],
+  "require": {
+    "amegatron/php-sync": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "PhpSync\\Drivers\\FileSystem\\": "src/"
+    }
+  }
+}
