@@ -16,5 +16,8 @@
     "psr-4": {
       "PhpSync\\Drivers\\FileSystem\\": "src/"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
   }
 }
