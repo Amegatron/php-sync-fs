@@ -42,6 +42,21 @@ class FileSystemIntegerSyncDriver implements IntegerSyncDriverInterface
     }
 
     /**
+     * @param $fileName
+     * @param $mode
+     * @return resource
+     * @throws SyncOperationException
+     */
+    protected function openFile($fileName, $mode)
+    {
+        $fp = fopen($fileName, $mode);
+        if (!$fp) {
+            throw new SyncOperationException("Could open target file for writing");
+        }
+        return $fp;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getValue(string $key): int
@@ -82,21 +97,6 @@ class FileSystemIntegerSyncDriver implements IntegerSyncDriverInterface
         fclose($fp);
 
         return $currentValue;
-    }
-
-    /**
-     * @param $fileName
-     * @param $mode
-     * @return resource
-     * @throws SyncOperationException
-     */
-    protected function openFile($fileName, $mode)
-    {
-        $fp = fopen($fileName, $mode);
-        if (!$fp) {
-            throw new SyncOperationException("Could open target file for writing");
-        }
-        return $fp;
     }
 
     /**

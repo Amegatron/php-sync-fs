@@ -14,22 +14,6 @@ class FileSystemLockSyncDriverTest extends SyncFsTestCase
         $this->rmdirRecursive(__DIR__ . "/data");
     }
 
-    protected function getOutputStream($fileName, &$descriptors)
-    {
-        if (file_exists($fileName)) {
-            unlink($fileName);
-        }
-        $stream = fopen($fileName, "a+");
-        stream_set_blocking($stream, false);
-
-        $descriptors = [
-            1 => $stream,
-            2 => $stream,
-        ];
-
-        return $stream;
-    }
-
     public function testSequentialLocks()
     {
         $fileName = __DIR__ . "/output.txt";
@@ -63,6 +47,40 @@ class FileSystemLockSyncDriverTest extends SyncFsTestCase
         $this->assertEquals("#2: lock {$key} released", $lines[5]);
     }
 
+    protected function getOutputStream($fileName, &$descriptors)
+    {
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
+        $stream = fopen($fileName, "a+");
+        stream_set_blocking($stream, false);
+
+        $descriptors = [
+            1 => $stream,
+            2 => $stream,
+        ];
+
+        return $stream;
+    }
+
+    protected function waitForProcesses(array $processes)
+    {
+        if (empty($processes)) {
+            return;
+        }
+
+        while (true) {
+            usleep(1000);
+            foreach ($processes as $process) {
+                $status = proc_get_status($process);
+                if ($status['running']) {
+                    continue 2;
+                }
+            }
+            break;
+        }
+    }
+
     public function testWait()
     {
         $fileName = __DIR__ . "/output.txt";
@@ -93,23 +111,5 @@ class FileSystemLockSyncDriverTest extends SyncFsTestCase
         $this->assertEquals("#2: waiting for lock {$key}", $lines[2]);
         $this->assertEquals("#1: lock {$key} released", $lines[3]);
         $this->assertEquals("#2: lock {$key} was released", $lines[4]);
-    }
-
-    protected function waitForProcesses(array $processes)
-    {
-        if (empty($processes)) {
-            return;
-        }
-
-        while (true) {
-            usleep(1000);
-            foreach ($processes as $process) {
-                $status = proc_get_status($process);
-                if ($status['running']) {
-                    continue 2;
-                }
-            }
-            break;
-        }
     }
 }

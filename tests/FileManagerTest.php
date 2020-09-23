@@ -4,7 +4,6 @@ require_once __DIR__ . '/SyncFsTestCase.php';
 
 use PhpSync\Drivers\FileSystem\FileManager;
 use PhpSync\Drivers\FileSystem\FileManagerInterface;
-use PHPUnit\Framework\TestCase;
 
 class FileManagerTest extends SyncFsTestCase
 {

@@ -18,6 +18,16 @@ class FileSystemLockSyncDriver implements LockSyncDriverInterface
         $this->setManager($manager);
     }
 
+    /**
+     * @param FileManagerInterface $manager
+     * @return FileSystemLockSyncDriver
+     */
+    public function setManager(FileManagerInterface $manager): FileSystemLockSyncDriver
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
     public function lock(string $key)
     {
         $fileName = $this->getManager()->getFileName($key, self::CATEGORY);
@@ -27,6 +37,14 @@ class FileSystemLockSyncDriver implements LockSyncDriverInterface
 
         $this->fp = fopen($fileName, 'w');
         flock($this->fp, LOCK_EX);
+    }
+
+    /**
+     * @return FileManagerInterface
+     */
+    public function getManager(): FileManagerInterface
+    {
+        return $this->manager;
     }
 
     public function unlock(string $key): bool
@@ -78,23 +96,5 @@ class FileSystemLockSyncDriver implements LockSyncDriverInterface
             fclose($fp);
             return true;
         }
-    }
-
-    /**
-     * @return FileManagerInterface
-     */
-    public function getManager(): FileManagerInterface
-    {
-        return $this->manager;
-    }
-
-    /**
-     * @param FileManagerInterface $manager
-     * @return FileSystemLockSyncDriver
-     */
-    public function setManager(FileManagerInterface $manager): FileSystemLockSyncDriver
-    {
-        $this->manager = $manager;
-        return $this;
     }
 }

@@ -18,8 +18,6 @@ class FileManager implements FileManagerInterface
     /**
      * Gets full fileName for the given key and category
      *
-     * TODO: delegate to a separate logic
-     *
      * @param string $key
      * @param string $category
      * @return mixed
@@ -33,15 +31,13 @@ class FileManager implements FileManagerInterface
             $this->cache[$key] = $hash;
         }
 
-        $fileName = $this->rootPath . "/" . strtolower($category). "/";
+        $fileName = $this->rootPath . "/" . strtolower($category) . "/";
         $fileName .= substr($hash, 0, 2) . "/" . substr($hash, 2, 2) . "/" . $hash;
         return $fileName;
     }
 
     /**
      * Creates directory structure for a given file, assuming $rootPath already exists
-     *
-     * TODO: delegate to a separate logic (@see getFileName())
      *
      * @param $fileName
      * @throws SyncOperationException
