@@ -57,7 +57,7 @@ class FileSystemIntegerSyncDriver implements IntegerSyncDriverInterface
     /**
      * @inheritDoc
      */
-    public function increment(string $key, int $by)
+    public function increment(string $key, int $by): int
     {
         $fileName = $this->getManager()->getFileName($key, self::CATEGORY);
         $currentValue = 0;
