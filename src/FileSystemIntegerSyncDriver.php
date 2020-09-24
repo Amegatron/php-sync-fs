@@ -2,8 +2,8 @@
 
 namespace PhpSync\Drivers\FileSystem;
 
+use PhpSync\Core\Exceptions\IntegerDoesNotExistException;
 use PhpSync\Core\Exceptions\SyncOperationException;
-use PhpSync\Generic\IntegerDoesNotExistException;
 use PhpSync\Generic\IntegerSyncDriverInterface;
 
 /**
