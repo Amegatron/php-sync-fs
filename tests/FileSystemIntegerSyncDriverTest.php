@@ -2,9 +2,9 @@
 
 require_once __DIR__ . '/SyncFsTestCase.php';
 
+use PhpSync\Core\Exceptions\IntegerDoesNotExistException;
 use PhpSync\Drivers\FileSystem\FileManager;
 use PhpSync\Drivers\FileSystem\FileManagerInterface;
-use PhpSync\Generic\IntegerDoesNotExistException;
 use PhpSync\Generic\IntegerSyncDriverInterface;
 
 class FileSystemIntegerSyncDriverTest extends SyncFsTestCase
