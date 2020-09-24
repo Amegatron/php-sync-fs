@@ -176,7 +176,27 @@ class FileSystemLockSyncDriverTest extends SyncFsTestCase
 
         $this->assertTrue($lock2->exists());
         $this->assertTrue($lock2->unlock());
+
+        $this->assertFalse($lock2->exists());
         $this->assertFalse($lock2->unlock());
+    }
+
+    public function testParallelUnlock()
+    {
+        $this->setUpDriver();
+        $key = $this->getRandomKey();
+        $lock = Lock::getInstance($key, $this->singletonManager, $this->driver);
+
+        $p1cmd = "php " . __DIR__ . "/lock_agent.php -i 1 -k \"{$key}\" -o lock -t500000";
+        $p1 = proc_open($p1cmd, [1 => ["pipe", "w"]], $pipes);
+        usleep(100000); // small pause before next instance
+
+        $this->assertTrue($lock->exists());
+        $this->assertTrue($lock->unlock());
+        $this->assertFalse($lock->exists());
+
+        $this->waitForProcesses([$p1]);
+        proc_close($p1);
     }
 
     protected function setUpDriver()
