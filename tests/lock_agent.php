@@ -14,7 +14,7 @@ $instanceNum = intval($opts["i"]);
 $singletonManager = new SingletonManager();
 $fileManager = new FileManager(__DIR__ . '/data');
 $driver = new FileSystemLockSyncDriver($fileManager);
-$lock = Lock::getInstance($key, $singletonManager, $driver);
+$lock = Lock::getInstance($key, $driver, $singletonManager);
 
 switch ($opts["o"]) {
     case "lock":

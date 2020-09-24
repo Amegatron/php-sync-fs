@@ -150,12 +150,12 @@ class FileSystemLockSyncDriverTest extends SyncFsTestCase
         $this->setUpDriver();
         $key = $this->getRandomKey();
 
-        $lock1 = Lock::getInstance($key, $this->singletonManager, $this->driver);
+        $lock1 = Lock::getInstance($key, $this->driver, $this->singletonManager);
         $lock1->lock();
         $this->assertTrue($lock1->exists());
 
         // Making an independent instance which knows nothing initially
-        $lock2 = Lock::getInstance($key, new SingletonManager(), $this->getNewDriver());
+        $lock2 = Lock::getInstance($key, $this->getNewDriver());
 
         $this->assertNotSame($lock1, $lock2);
         $this->assertTrue($lock2->exists());
@@ -166,11 +166,11 @@ class FileSystemLockSyncDriverTest extends SyncFsTestCase
         $this->setUpDriver();
         $key = $this->getRandomKey();
 
-        $lock1 = Lock::getInstance($key, $this->singletonManager, $this->driver);
+        $lock1 = Lock::getInstance($key, $this->driver, $this->singletonManager);
         $lock1->lock();
 
         // Making an independent instance which knows nothing initially
-        $lock2 = Lock::getInstance($key, new SingletonManager(), $this->getNewDriver());
+        $lock2 = Lock::getInstance($key, $this->getNewDriver());
 
         $this->assertNotSame($lock1, $lock2);
 
@@ -185,7 +185,7 @@ class FileSystemLockSyncDriverTest extends SyncFsTestCase
     {
         $this->setUpDriver();
         $key = $this->getRandomKey();
-        $lock = Lock::getInstance($key, $this->singletonManager, $this->driver);
+        $lock = Lock::getInstance($key, $this->driver, $this->singletonManager);
 
         $p1cmd = "php " . __DIR__ . "/lock_agent.php -i 1 -k \"{$key}\" -o lock -t500000";
         $p1 = proc_open($p1cmd, [1 => ["pipe", "w"]], $pipes);
